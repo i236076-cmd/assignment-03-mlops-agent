@@ -9,3 +9,4 @@ mlflow.db
 airflow_home/
 *.log
 kubeconfig*
+mlartifacts/
