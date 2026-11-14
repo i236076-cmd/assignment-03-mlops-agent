@@ -1,0 +1,13 @@
+NAME                             READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES
+pod/churn-api-7557d78fdb-gt2gb   1/1     Running   0          87s   10.244.0.5   minikube   <none>           <none>
+pod/churn-api-7557d78fdb-zrv6r   1/1     Running   0          87s   10.244.0.4   minikube   <none>           <none>
+
+NAME                TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/churn-api   ClusterIP   10.109.39.215   <none>        80/TCP    87s   app=churn-api
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES            SELECTOR
+deployment.apps/churn-api   2/2     2            2           87s   churn-api    churn-api:1.0.0   app=churn-api
+
+NAME                         DATA   AGE
+configmap/churn-api-config   3      87s
+configmap/kube-root-ca.crt   1      110s
