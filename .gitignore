@@ -10,3 +10,4 @@ airflow_home/
 *.log
 kubeconfig*
 mlartifacts/
+artifacts/
