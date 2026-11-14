@@ -1,0 +1,7 @@
+16ed63c (HEAD -> main) Trust sklearn Tree type when logging models with skops
+f7826a2 Add training script with MLflow logging and dataset provenance
+417aec0 (tag: v2) Add dataset v2 (1500 rows)
+fb69ead (tag: v1) Add dataset v1 (1000 rows)
+7079a75 Add project skeleton, requirements and data generator
+af91486 Disable DVC analytics
+bab6bfe Initialize DVC with local remote
