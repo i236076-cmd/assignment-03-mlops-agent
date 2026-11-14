@@ -1,0 +1,9 @@
+{
+  "model_name": "churn-model",
+  "model_version": "1",
+  "run_id": "2aa5f40c975c4a5681ba6f83cc869f37",
+  "dataset_version": "v2",
+  "git_commit": "f7826a29a3b2f25f7ccab9bab6b111fd083a474b",
+  "f1": 0.7708333333333334,
+  "roc_auc": 0.8718577286503834
+}
