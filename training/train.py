@@ -100,6 +100,7 @@ def main():
             model,
             name="model",
             input_example=X_test.head(3),
+            skops_trusted_types=["sklearn.tree._tree.Tree"],
             registered_model_name=None if args.no_register else args.registered_name,
         )
 
