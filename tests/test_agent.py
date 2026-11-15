@@ -118,3 +118,20 @@ def test_write_requests_are_planned_but_blocked_without_confirmation(dummy_tools
     blocked = [t for t in result["tool_calls"] if t["tool"] == "airflow_trigger_dag"][0]
     assert blocked["status"] == "rejected" and "confirmation" in blocked["error"]
     assert not any("dagRuns" in str(a) and "POST" in str(a) for a in sent)
+
+
+def test_answer_lists_uncertainties_from_evidence():
+    results = [
+        ("find_best_run", {"status": "ok", "data": {"metric": "f1", "best": {
+            "run_id": "a" * 32, "run_name": "rf_v1", "metrics": {"f1": 0.77}, "dataset_version": "v1", "quality_gate": None}}}),
+        ("get_current_dataset_version", {"status": "ok", "data": {"version": "v2", "md5": "m"}}),
+        ("get_dataset_for_run", {"status": "ok", "data": {"run_id": "a" * 32, "dataset_version": "v1", "dataset_md5": "m1",
+                                                         "dataset_commit": "c" * 40, "code_had_uncommitted_changes": "true"}}),
+        ("k8s_get_deployed_version", {"status": "ok", "data": {"images": ["churn-api:1.0.0"], "version_label": "1.0.0",
+                                                               "configmap_app_version": "1.0.0", "replicas": {}}}),
+    ]
+    text = FallbackLLM.compose("find the best model and say if retraining is needed", results)
+    assert "trained on dataset v1 but the tracked dataset is now v2" in text
+    assert "uncommitted code changes" in text and "no quality-gate record" in text
+    assert "cannot confirm the deployed model is the best run" in text
+    assert "No evidence" in text and "nothing in the cluster was changed" in text

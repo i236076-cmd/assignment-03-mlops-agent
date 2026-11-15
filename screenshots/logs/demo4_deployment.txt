@@ -1,6 +1,6 @@
 ### Why might my prediction API be unavailable? Check the Kubernetes pods, events and logs.
 Known facts (from tool results):
-- k8s_diagnose_deployment: {"truncated_preview": "{\"namespace\": \"mlops-demo\", \"deployment\": {\"name\": \"churn-api\", \"desired_replicas\": 2, \"ready_replicas\": 2, \"updated_replicas\": 2, \"available_replicas\": 2, \"images\": [\"churn-api:1.0.0\"], \"version_label\": \"1.0.0\", \"conditions\": [{\"type\": \"Available\", \"status\": \"True\", \"reason\": \"MinimumRe
+- k8s_diagnose_deployment: {"truncated_preview": "{\"findings\": [\"All 2 pod(s) are Running and Ready. No fault found in the cluster data.\"], \"namespace\": \"mlops-demo\", \"deployment\": {\"name\": \"churn-api\", \"desired_replicas\": 2, \"ready_replicas\": 2, \"updated_replicas\": 2, \"available_replicas\": 2, \"images\": [\"churn-api:1.0.0\"], \"version_label\": \"1.0.
 
 Uncertainties:
 - none reported by the tools
@@ -8,5 +8,5 @@ Uncertainties:
 Recommended actions:
 - No pipeline was started and nothing in the cluster was changed.
 
---- evidence (request c44280418d99, LLM: rule-based) ---
-k8s_diagnose_deployment          ok              77 ms  
+--- evidence (request 5cf6c3202bbc, LLM: rule-based) ---
+k8s_diagnose_deployment          ok             111 ms  

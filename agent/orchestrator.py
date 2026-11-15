@@ -185,16 +185,61 @@ class FallbackLLM:
         return {"content": self.compose(query, results), "tool_calls": []}
 
     @staticmethod
+    def _fact(name, data):
+        """One readable line per tool. Falls back to short JSON for tools without a custom line."""
+        try:
+            if name == "k8s_diagnose_deployment":
+                dep = data["deployment"]
+                return "deployment %s: %s/%s replicas ready, image %s. Findings: %s" % (
+                    dep["name"], dep["ready_replicas"], dep["desired_replicas"], ", ".join(dep["images"]),
+                    " ".join(data["findings"]))
+            if name == "k8s_get_deployed_version":
+                return "image %s, version label %s, ConfigMap APP_VERSION %s, replicas %s" % (
+                    ", ".join(data["images"]), data["version_label"], data["configmap_app_version"], data["replicas"])
+            if name == "airflow_get_dag_runs":
+                return "recent runs of %s: %s" % (data["dag_id"], "; ".join(
+                    "%s = %s" % (r["run_id"], r["state"]) for r in data["runs"]))
+            if name == "find_best_run":
+                best = data["best"]
+                return "best run by %s is %s (%s) with metrics %s, trained on dataset %s" % (
+                    data["metric"], best["run_name"], best["run_id"][:8], best["metrics"], best["dataset_version"])
+            if name == "get_dataset_for_run":
+                return "run %s used dataset %s (md5 %s, data commit %s)" % (
+                    data["run_id"][:8], data["dataset_version"], data["dataset_md5"], data["dataset_commit"][:8])
+            if name == "get_current_dataset_version":
+                return "tracked dataset is %s (md5 %s)" % (data["version"], data["dataset_md5"] if "dataset_md5" in data else data["md5"])
+        except (KeyError, TypeError, IndexError):
+            pass
+        return json.dumps(data, default=str)[:350]
+
+    @staticmethod
     def compose(query, results):
-        facts, unknown = [], []
+        facts, unknown, actions = [], [], []
+        by_name = {n: r for n, r in results if r.get("status") == "ok"}
         for name, res in results:
             if res.get("status") == "ok":
-                facts.append("- %s: %s" % (name, json.dumps(res.get("data"), default=str)[:350]))
+                facts.append("- %s: %s" % (name, FallbackLLM._fact(name, res.get("data"))))
             else:
                 unknown.append("- %s: %s (%s)" % (name, res.get("error"), res.get("status")))
-        actions = []
-        for name, res in results:
-            if name == "airflow_get_dag_runs" and res.get("status") == "ok":
+
+        def data(name):
+            return (by_name.get(name) or {}).get("data") or {}
+
+        best = (data("find_best_run").get("best") or {})
+        if best:
+            if best.get("quality_gate") is None:
+                unknown.append("- The best run has no quality-gate record, so a high metric does not prove it is production-ready.")
+            current = data("get_current_dataset_version").get("version")
+            if current and best.get("dataset_version") and best["dataset_version"] != current:
+                unknown.append("- The best run was trained on dataset %s but the tracked dataset is now %s. "
+                               "No result here compares a model trained on %s." % (best["dataset_version"], current, current))
+            if str(data("get_dataset_for_run").get("code_had_uncommitted_changes")).lower() == "true":
+                unknown.append("- That run was made with uncommitted code changes, so it may not be reproducible from its git commit.")
+            if "k8s_get_deployed_version" in by_name or "k8s_diagnose_deployment" in by_name:
+                unknown.append("- Nothing in these results links the deployed image to this MLflow run, "
+                               "so I cannot confirm the deployed model is the best run.")
+        for name, res in by_name.items():
+            if name == "airflow_get_dag_runs":
                 runs = (res.get("data") or {}).get("runs") or []
                 if runs and runs[0].get("state") == "failed":
                     actions.append("The latest training run failed. Look at its failed task and log "

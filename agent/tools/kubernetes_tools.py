@@ -288,10 +288,10 @@ def k8s_diagnose_deployment(deployment=None, namespace=None):
                 logs[p["name"]] = _pod_logs(core, ns, p["name"], 30, previous=p["restarts"] > 0 and not p["ready"])
             except (ToolError, ToolUnavailable) as exc:
                 logs[p["name"]] = "log not available: %s" % exc
-    return {
+    return {  # findings first, so they survive when long results are shortened
+        "findings": _findings(dep, pods, logs),
         "namespace": ns, "deployment": dep, "pods": pods,
         "warning_events": _warning_events(core, ns), "logs": logs,
-        "findings": _findings(dep, pods, logs),
     }
 
 

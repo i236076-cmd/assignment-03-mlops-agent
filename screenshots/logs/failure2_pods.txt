@@ -1,0 +1,4 @@
+NAME                         READY   STATUS         RESTARTS      AGE
+churn-api-7557d78fdb-gt2gb   1/1     Running        1 (69m ago)   18h
+churn-api-7557d78fdb-zrv6r   1/1     Running        1 (69m ago)   18h
+churn-api-7875675f9d-m6bdq   0/1     ErrImagePull   0             27s

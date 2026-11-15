@@ -1,0 +1,10 @@
+NAME                             READY   STATUS        RESTARTS      AGE
+pod/churn-api-7557d78fdb-gt2gb   1/1     Running       1 (69m ago)   18h
+pod/churn-api-7557d78fdb-zrv6r   1/1     Running       1 (69m ago)   18h
+pod/churn-api-7875675f9d-m6bdq   0/1     Terminating   0             27s
+
+NAME                TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/churn-api   ClusterIP   10.109.39.215   <none>        80/TCP    18h
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/churn-api   2/2     2            2           18h

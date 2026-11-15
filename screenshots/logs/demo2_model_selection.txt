@@ -1,17 +1,17 @@
 ### Compare the last five training runs and recommend the best candidate based on F1 score.
 Known facts (from tool results):
-- find_best_run: {"metric": "f1", "runs_considered": 7, "best": {"run_id": "6fc262121a8a42a984eb7fd5b80a5a0c", "run_name": "rf_medium_v1", "status": "FINISHED", "started": "2026-11-14T19:04:46+00:00", "source": "manual", "dataset_version": "v1", "quality_gate": null, "metrics": {"accuracy": 0.77, "precision": 0.7315, "recall": 0.8229, "f1": 0.7745, "roc_auc": 0.850
+- find_best_run: best run by f1 is rf_medium_v1 (6fc26212) with metrics {'accuracy': 0.77, 'precision': 0.7315, 'recall': 0.8229, 'f1': 0.7745, 'roc_auc': 0.8506}, trained on dataset v1
 - compare_runs: {"runs": [{"run_id": "7fcf596aa03b4c1a9825a5a7e0db1ed2", "run_name": "airflow_manual__2026-11-15T07_40_08.464802_00_00", "status": "FINISHED", "started": "2026-11-15T07:40:20+00:00", "source": "airflow", "dataset_version": "v2", "quality_gate": "failed", "metrics": {"accuracy": 0.7433, "precision": 0.7124, "recall": 0.7676, "f1": 0.739, "roc_auc": 
-- airflow_get_dag_runs: {"dag_id": "training_pipeline", "count": 2, "runs": [{"run_id": "manual__2026-11-15T07:40:08.464802+00:00", "state": "failed", "run_type": "manual", "started": "2026-11-15T07:40:09.823996Z", "ended": "2026-11-15T07:40:28.895651Z", "conf": {"min_f1": 0.95}}, {"run_id": "manual__2026-11-15T07:32:31.885130+00:00", "state": "success", "run_type": "manu
+- airflow_get_dag_runs: recent runs of training_pipeline: manual__2026-11-15T07:40:08.464802+00:00 = failed; manual__2026-11-15T07:32:31.885130+00:00 = success
 
 Uncertainties:
-- none reported by the tools
+- The best run has no quality-gate record, so a high metric does not prove it is production-ready.
 
 Recommended actions:
 - The latest training run failed. Look at its failed task and log (airflow_get_failed_tasks) before deciding about retraining.
 - No pipeline was started and nothing in the cluster was changed.
 
---- evidence (request a5095d4482b1, LLM: rule-based) ---
-find_best_run                    ok             169 ms  
-compare_runs                     ok              35 ms  
-airflow_get_dag_runs             ok              25 ms  
+--- evidence (request d4a6b8cb6aee, LLM: rule-based) ---
+find_best_run                    ok              70 ms  
+compare_runs                     ok              44 ms  
+airflow_get_dag_runs             ok              28 ms  

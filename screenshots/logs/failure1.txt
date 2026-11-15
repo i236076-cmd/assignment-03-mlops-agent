@@ -1,5 +1,5 @@
 Known facts (from tool results):
-- airflow_get_dag_runs: {"dag_id": "training_pipeline", "count": 2, "runs": [{"run_id": "manual__2026-11-15T07:40:08.464802+00:00", "state": "failed", "run_type": "manual", "started": "2026-11-15T07:40:09.823996Z", "ended": "2026-11-15T07:40:28.895651Z", "conf": {"min_f1": 0.95}}, {"run_id": "manual__2026-11-15T07:32:31.885130+00:00", "state": "success", "run_type": "manu
+- airflow_get_dag_runs: recent runs of training_pipeline: manual__2026-11-15T07:40:08.464802+00:00 = failed; manual__2026-11-15T07:32:31.885130+00:00 = success
 - airflow_get_failed_tasks: {"dag_id": "training_pipeline", "run_id": "manual__2026-11-15T07:40:08.464802+00:00", "run_state": "failed", "failed_tasks": [{"task_id": "quality_gate", "state": "failed", "try_number": 1, "max_tries": 0, "started": "2026-11-15T07:40:26.459914Z", "ended": "2026-11-15T07:40:28.515772Z", "duration_s": 4.056}], "blocked_by_failure": [], "diagnostics"
 
 Uncertainties:
@@ -9,6 +9,6 @@ Recommended actions:
 - The latest training run failed. Look at its failed task and log (airflow_get_failed_tasks) before deciding about retraining.
 - No pipeline was started and nothing in the cluster was changed.
 
---- evidence (request de8159ba38d3, LLM: rule-based) ---
-airflow_get_dag_runs             ok              23 ms  
-airflow_get_failed_tasks         ok              57 ms  
+--- evidence (request f39fb0558c18, LLM: rule-based) ---
+airflow_get_dag_runs             ok              22 ms  
+airflow_get_failed_tasks         ok              55 ms  
