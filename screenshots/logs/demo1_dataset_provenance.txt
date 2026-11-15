@@ -1,0 +1,18 @@
+### Which dataset version was used to train the best model, and how do I reproduce it?
+Known facts (from tool results):
+- list_tracked_datasets: {"count": 1, "datasets": [{"dvc_file": "data/dataset.csv.dvc", "data_path": "data/dataset.csv", "md5": "ebfad498aa6eec419fff9fc1b4930796", "size_bytes": 31160, "version": "v2"}]}
+- get_current_dataset_version: {"dataset": "data/dataset.csv", "version": "v2", "md5": "ebfad498aa6eec419fff9fc1b4930796", "size_bytes": 31160, "commit_that_recorded_it": "417aec0c63d597690e96e0a3880794498d4bedf8", "commit_message": "Add dataset v2 (1500 rows)", "repo_head_commit": "bfd3503a564637994726144181c49859b966432b", "pointer_differs_from_head": false, "available_version
+- find_best_run: {"metric": "f1", "runs_considered": 7, "best": {"run_id": "6fc262121a8a42a984eb7fd5b80a5a0c", "run_name": "rf_medium_v1", "status": "FINISHED", "started": "2026-11-14T19:04:46+00:00", "source": "manual", "dataset_version": "v1", "quality_gate": null, "metrics": {"accuracy": 0.77, "precision": 0.7315, "recall": 0.8229, "f1": 0.7745, "roc_auc": 0.850
+- get_dataset_for_run: {"run_id": "6fc262121a8a42a984eb7fd5b80a5a0c", "run_name": "rf_medium_v1", "dataset_version": "v1", "dataset_md5": "f4731343419b90cc97b98a25874fbbba", "dataset_commit": "417aec0c63d597690e96e0a3880794498d4bedf8", "code_git_commit": "f7826a29a3b2f25f7ccab9bab6b111fd083a474b", "code_had_uncommitted_changes": "true", "recorded_version_matches_git_tags
+
+Uncertainties:
+- none reported by the tools
+
+Recommended actions:
+- No pipeline was started and nothing in the cluster was changed.
+
+--- evidence (request a320f451657f, LLM: rule-based) ---
+list_tracked_datasets            ok               8 ms  
+get_current_dataset_version      ok              13 ms  
+find_best_run                    ok              69 ms  
+get_dataset_for_run              ok              21 ms  

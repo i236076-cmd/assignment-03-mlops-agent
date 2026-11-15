@@ -1,0 +1,13 @@
+### Show the status of the recent training pipeline runs and their tasks.
+Known facts (from tool results):
+- airflow_get_dag_runs: {"dag_id": "training_pipeline", "count": 2, "runs": [{"run_id": "manual__2026-11-15T07:40:08.464802+00:00", "state": "failed", "run_type": "manual", "started": "2026-11-15T07:40:09.823996Z", "ended": "2026-11-15T07:40:28.895651Z", "conf": {"min_f1": 0.95}}, {"run_id": "manual__2026-11-15T07:32:31.885130+00:00", "state": "success", "run_type": "manu
+
+Uncertainties:
+- none reported by the tools
+
+Recommended actions:
+- The latest training run failed. Look at its failed task and log (airflow_get_failed_tasks) before deciding about retraining.
+- No pipeline was started and nothing in the cluster was changed.
+
+--- evidence (request 985027c18587, LLM: rule-based) ---
+airflow_get_dag_runs             ok              23 ms  

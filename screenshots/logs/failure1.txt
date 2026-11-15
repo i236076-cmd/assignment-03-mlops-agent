@@ -9,6 +9,6 @@ Recommended actions:
 - The latest training run failed. Look at its failed task and log (airflow_get_failed_tasks) before deciding about retraining.
 - No pipeline was started and nothing in the cluster was changed.
 
---- evidence (request 86c2a82e2512, LLM: rule-based) ---
-airflow_get_dag_runs             ok              24 ms  
-airflow_get_failed_tasks         ok             116 ms  
+--- evidence (request de8159ba38d3, LLM: rule-based) ---
+airflow_get_dag_runs             ok              23 ms  
+airflow_get_failed_tasks         ok              57 ms  
