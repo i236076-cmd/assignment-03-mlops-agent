@@ -1,0 +1,293 @@
+== list_tracked_datasets  -> ok (18 ms)
+{
+ "count": 1,
+ "datasets": [
+  {
+   "dvc_file": "data/dataset.csv.dvc",
+   "data_path": "data/dataset.csv",
+   "md5": "ebfad498aa6eec419fff9fc1b4930796",
+   "size_bytes": 31160,
+   "version": "v2"
+  }
+ ]
+}
+== get_current_dataset_version  -> ok (29 ms)
+{
+ "dataset": "data/dataset.csv",
+ "version": "v2",
+ "md5": "ebfad498aa6eec419fff9fc1b4930796",
+ "size_bytes": 31160,
+ "commit_that_recorded_it": "417aec0c63d597690e96e0a3880794498d4bedf8",
+ "commit_message": "Add dataset v2 (1500 rows)",
+ "repo_head_commit": "97362946d1d721972ca76e13faf031b0c999d080",
+ "pointer_differs_from_head": false,
+ "available_versions": [
+  "v1",
+  "v2"
+ ]
+}
+== compare_dataset_versions {'version_a': 'v1', 'version_b': 'v2'} -> ok (1337 ms)
+{
+ "dataset": "data/dataset.csv",
+ "versions": {
+  "v1": {
+   "md5": "f4731343419b90cc97b98a25874fbbba",
+   "size_bytes": 20785,
+   "rows": 1000,
+   "stored_in_cache": true,
+   "stored_in_remote": true
+  },
+  "v2": {
+   "md5": "ebfad498aa6eec419fff9fc1b4930796",
+   "size_bytes": 31160,
+   "rows": 1500,
+   "stored_in_cache": true,
+   "stored_in_remote": true
+  }
+ },
+ "identical": false,
+ "size_difference_bytes": 10375,
+ "row_difference": 500
+}
+== check_data_changed  -> ok (667 ms)
+{
+ "dataset": "data/dataset.csv",
+ "state": "unchanged",
+ "recorded_md5": "ebfad498aa6eec419fff9fc1b4930796",
+ "actual_md5": "ebfad498aa6eec419fff9fc1b4930796",
+ "dvc_status": "Data and pipelines are up to date."
+}
+== explain_dataset_reproduction {'version': 'v1'} -> ok (590 ms)
+{
+ "version": "v1",
+ "md5": "f4731343419b90cc97b98a25874fbbba",
+ "available_in_local_cache": true,
+ "available_in_remote": true,
+ "steps": [
+  "git checkout v1 -- data/dataset.csv.dvc",
+  "dvc checkout data/dataset.csv.dvc",
+  "md5sum data/dataset.csv   (should print f4731343419b90cc97b98a25874fbbba)"
+ ],
+ "to_go_back": [
+  "git checkout HEAD -- data/dataset.csv.dvc",
+  "dvc checkout data/dataset.csv.dvc"
+ ],
+ "note": "This tool only explains the steps, it does not change any files."
+}
+== get_dataset_for_run {'run': 'rf_small_v1'} -> ok (157 ms)
+{
+ "run_id": "cd96ec26beef4d26a8a57d97c8ea5c45",
+ "run_name": "rf_small_v1",
+ "dataset_version": "v1",
+ "dataset_md5": "f4731343419b90cc97b98a25874fbbba",
+ "dataset_commit": "417aec0c63d597690e96e0a3880794498d4bedf8",
+ "code_git_commit": "f7826a29a3b2f25f7ccab9bab6b111fd083a474b",
+ "code_had_uncommitted_changes": "true",
+ "recorded_version_matches_git_tags": true,
+ "to_reproduce": "ask for explain_dataset_reproduction with version v1"
+}
+== list_experiments  -> ok (63 ms)
+{
+ "experiments": [
+  {
+   "name": "churn-prediction",
+   "experiment_id": "1",
+   "runs": 7
+  },
+  {
+   "name": "Default",
+   "experiment_id": "0",
+   "runs": 0
+  }
+ ]
+}
+== find_best_run {'metric': 'f1'} -> ok (90 ms)
+{
+ "metric": "f1",
+ "runs_considered": 7,
+ "best": {
+  "run_id": "6fc262121a8a42a984eb7fd5b80a5a0c",
+  "run_name": "rf_medium_v1",
+  "status": "FINISHED",
+  "started": "2026-11-14T19:04:46+00:00",
+  "source": "manual",
+  "dataset_version": "v1",
+  "quality_gate": null,
+  "metrics": {
+   "accuracy": 0.77,
+   "precision": 0.7315,
+   "recall": 0.8229,
+   "f1": 0.7745,
+   "roc_auc": 0.8506
+  },
+  "params": {
+   "model_type": "rf",
+   "n_estimators": "100",
+   "max_depth": "10",
+   "test_size": "0.2",
+   "seed": "42",
+   "n_rows": "1000"
+  }
+ },
+ "runner_up": {
+  "run_id": "2aa5f40c975c4a5681ba6f83cc869f37",
+  "run_name": "logreg_v2",
+  "status": "FINISHED",
+  "started": "2026-11-14T19:01:34+00:00",
+  "source": "manual",
+  "dataset_version": "v2",
+  "quality_gate": null,
+  "metrics": {
+   "accuracy": 0.78,
+   "precision": 0.7603,
+   "recall": 0.7817,
+   "f1": 0.7708,
+   "roc_auc": 0.8719
+  },
+  "params": {
+   "model_type": "logreg",
+   "n_estimators": "na",
+   "max_depth": "na",
+   "test_size": "0.2",
+   "seed": "42",
+   "n_rows": "1500"
+  }
+ },
+ "caveats": [
+  "the compared runs used different dataset versions (v1, v2), so their test sets differ and the scores are not directly comparable",
+  "the lead over the runner-up is only 0.0037, which is within normal noise",
+  "this run was recorded with uncommitted code changes",
+  "the score comes from one hold-out split; production readiness also needs a healthy deployment, latency checks, drift monitoring and an approval step"
+ ]
+}
+== compare_runs {'last_n': 5} -> ok (58 ms)
+{
+ "runs": [
+  {
+   "run_id": "7fcf596aa03b4c1a9825a5a7e0db1ed2",
+   "run_name": "airflow_manual__2026-11-15T07_40_08.464802_00_00",
+   "status": "FINISHED",
+   "started": "2026-11-15T07:40:20+00:00",
+   "source": "airflow",
+   "dataset_version": "v2",
+   "quality_gate": "failed",
+   "metrics": {
+    "accuracy": 0.7433,
+    "precision": 0.7124,
+    "recall": 0.7676,
+    "f1": 0.739,
+    "roc_auc": 0.8165
+   },
+   "params": {
+    "model_type": "rf",
+    "n_estimators": "100",
+    "max_depth": "10",
+    "test_size": "0.2",
+    "seed": "42",
+    "n_rows": "1200"
+   }
+  },
+  {
+   "run_id": "2270a3a5b9ca4bc7a1441da3192a2f6d",
+   "run_name": "airflow_manual__2026-11-15T07_32_31.885130_00_00",
+   "status": "FINISHED",
+   "started": "2026-11-15T07:32:46+00:00",
+   "source": "airflow",
+   "dataset_version": "v2",
+   "quality_gate": "passed",
+   "metrics": {
+    "accuracy": 0.7433,
+    "precision": 0.7124,
+    "recall": 0.7676,
+    "f1": 0.739,
+    "roc_auc": 0.8165
+   },
+   "params": {
+    "model_type": "rf",
+    "n_estimators": "100",
+    "max_depth": "10",
+    "test_size": "0.2",
+    "seed": "42",
+    "n_rows": "1200"
+   }
+  },
+  {
+   "run_id": "4d91287abafc4dd58c3f1fcc7a3a0eef",
+   "run_name": "rf_large_v2",
+   "status": "FINISHED",
+   "started": "2026-11-14T19:05:02+00:00",
+   "source": "manual",
+   "dataset_version": "v2",
+   "quality_gate": null,
+   "metrics": {
+    "accuracy": 0.75,
+    "precision": 0.7134,
+    "recall": 0.7887,
+    "f1": 0.7492,
+    "roc_auc": 0.816
+   },
+   "
+== get_model_registry  -> ok (147 ms)
+{
+ "model": "churn-model",
+ "versions": [
+  {
+   "version": "1",
+   "run_name": "logreg_v2",
+   "run_id": "2aa5f40c975c4a5681ba6f83cc869f37",
+   "dataset_version": "v2",
+   "f1": 0.7708,
+   "roc_auc": 0.8719,
+   "aliases": []
+  },
+  {
+   "version": "2",
+   "run_name": "rf_small_v1",
+   "run_id": "cd96ec26beef4d26a8a57d97c8ea5c45",
+   "dataset_version": "v1",
+   "f1": 0.75,
+   "roc_auc": 0.8653,
+   "aliases": []
+  },
+  {
+   "version": "3",
+   "run_name": "rf_medium_v1",
+   "run_id": "6fc262121a8a42a984eb7fd5b80a5a0c",
+   "dataset_version": "v1",
+   "f1": 0.7745,
+   "roc_auc": 0.8506,
+   "aliases": []
+  },
+  {
+   "version": "4",
+   "run_name": "rf_medium_v2",
+   "run_id": "eb9b85ba3fef4f3885b1d521e5fac8d5",
+   "dataset_version": "v2",
+   "f1": 0.739,
+   "roc_auc": 0.8165,
+   "aliases": []
+  },
+  {
+   "version": "5",
+   "run_name": "rf_large_v2",
+   "run_id": "4d91287abafc4dd58c3f1fcc7a3a0eef",
+   "dataset_version": "v2",
+   "f1": 0.7492,
+   "roc_auc": 0.816,
+   "aliases": []
+  },
+  {
+   "version": "7",
+   "run_name": "airflow_manual__2026-11-15T07_32_31.885130_00_00",
+   "run_id": "2270a3a5b9ca4bc7a1441da3192a2f6d",
+   "dataset_version": "v2",
+   "f1": 0.739,
+   "roc_auc": 0.8165,
+   "aliases": [
+    "candidate"
+   ]
+  }
+ ]
+}
+== compare_dataset_versions {'version_a': 'v1', 'version_b': '--output=/tmp/x'} -> error (529 ms)
+"invalid version name: '--output=/tmp/x'"
