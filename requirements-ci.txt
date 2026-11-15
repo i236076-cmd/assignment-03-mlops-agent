@@ -1,0 +1,11 @@
+# Light dependency list for CI. Airflow, DVC remotes, Minikube and the LLM are all mocked in tests.
+pytest
+ruff
+requests
+pydantic>=2
+fastapi
+httpx
+kubernetes
+mlflow-skinny
+pyyaml
+pandas

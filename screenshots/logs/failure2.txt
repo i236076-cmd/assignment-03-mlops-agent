@@ -1,0 +1,11 @@
+Known facts (from tool results):
+- k8s_diagnose_deployment: {"truncated_preview": "{\"namespace\": \"mlops-demo\", \"deployment\": {\"name\": \"churn-api\", \"desired_replicas\": 2, \"ready_replicas\": 2, \"updated_replicas\": 1, \"available_replicas\": 2, \"images\": [\"churn-api:does-not-exist\"], \"version_label\": \"1.0.0\", \"conditions\": [{\"type\": \"Available\", \"status\": \"True\", \"reason\": \"
+
+Uncertainties:
+- none reported by the tools
+
+Recommended actions:
+- No pipeline was started and nothing in the cluster was changed.
+
+--- evidence (request 809bf6be7411, LLM: rule-based) ---
+k8s_diagnose_deployment          ok             122 ms  
